@@ -21,6 +21,8 @@
           .col-3
             p {{ req.subject }} ({{ req.teacher }})
             //- el-badge(v-if="req.subject === 'Physics'" :value="req.class")
+        .row
+          p #[i {{ req.email }}]
 
       q-card-separator
 

@@ -18,10 +18,19 @@ q-layout(ref="layout" view="lHh Lpr fff" :left-class="{'bg-grey-2': true}")
           q-item-main
             q-item-tile(label)
               p Requests
+        q-side-link(to="/equipment" dense)
+          q-item-main
+            q-item-tile(label)
+              p By equipment
         q-side-link(to="/reagents" dense)
           q-item-main
             q-item-tile(label)
               p By reagents
+        q-side-link(to="/purchases" dense)
+          q-item-main
+            q-item-tile(label)
+              p By purchases
+
         //- q-side-link()
       //- q-item(@click="launch('http://quasar-framework.org')")
       //-   q-item-side(icon="school")

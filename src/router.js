@@ -36,6 +36,14 @@ export default new VueRouter({
         {
           path: 'reagents',
           component: load('reagents')
+        },
+        {
+          path: 'purchases',
+          component: load('purchases')
+        },
+        {
+          path: 'equipment',
+          component: load('equipment')
         }
       ]
     }

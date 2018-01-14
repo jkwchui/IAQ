@@ -1,13 +1,15 @@
 <template lang="pug">
   .layout-padding
-    h1 REAGENTS
+    h1 PURCHASES
     br
-    q-data-table(:data="reagents", :config="config", :columns="columns")
+    q-data-table(:data="purchases", :config="config", :columns="columns")
+      template(slot="col-link" scope="cell")
+        a(:href="cell.data") {{ cell.data }}
       template(slot="col-email" scope="cell")
         a(:href="'mailto:'+cell.data+'?Subject=[Lab%20Request]%20'") {{ cell.data }}
     //- hr
-    h2 Additional reagents
-    q-data-table(:data="additionalReagents", :config="config", :columns="addColumns")
+    h2 Additional purchases
+    q-data-table(:data="additionalPurchases", :config="config", :columns="addColumns")
 
 </template>
 
@@ -29,23 +31,23 @@ export default {
       },
       columns: [
         {
-          label: 'Reagent',
+          label: 'Purchase',
           field: 'item',
           width: '180px'
         },
         {
-          label: 'Amount / g',
+          label: 'Amount',
           field: 'amount',
           width: '80px'
         },
         {
-          label: 'Conc / mol/dm3',
-          field: 'conc',
-          width: '100px'
+          label: 'Supplier Link',
+          field: 'link',
+          width: '250px'
         },
         {
-          label: 'Volume / cm3',
-          field: 'vol',
+          label: 'Approx cost',
+          field: 'cost',
           width: '100px'
         },
         {
@@ -120,18 +122,18 @@ export default {
       return this.$store.getters.getRequests
     },
 
-    reagents () {
-      let tmpReagents = []
+    purchases () {
+      let tmpPurchases = []
 
       for (let request of this.requests) {
         // console.log(request)
-        for (let reagent of request.reagents) {
+        for (let purchase of request.requests) {
           // console.log(reagent)
-          let formattedReagent = {
-            item: reagent.item,
-            amount: reagent.amount,
-            conc: reagent.conc,
-            vol: reagent.vol,
+          let formattedPurchase = {
+            item: purchase.item,
+            amount: purchase.amount,
+            link: purchase.link,
+            cost: purchase.cost,
             name: request.name,
             subject: request.subject,
             class: request.class,
@@ -140,12 +142,12 @@ export default {
           }
 
           // console.log("formattedReagent= ", formattedReagent)
-          if (formattedReagent.item !== '') {
-            tmpReagents.push(formattedReagent)
+          if (formattedPurchase.item !== '') {
+            tmpPurchases.push(formattedPurchase)
           }
         }
       }
-      tmpReagents.sort((a, b) => {
+      tmpPurchases.sort((a, b) => {
         if (a.class.toLowerCase() < b.class.toLowerCase()) { return -1 }
         else if (a.class.toLowerCase() > b.class.toLowerCase()) { return 1 }
         else { return 0 }
@@ -158,25 +160,25 @@ export default {
         else if (a.item.toLowerCase() > b.item.toLowerCase()) { return 1 }
         else { return 0 }
       })
-      return tmpReagents
+      return tmpPurchases
     },
 
-    additionalReagents () {
-      let tmpAdditionalReagents = []
+    additionalPurchases () {
+      let tmpAdditionalPurchases = []
       for (let request of this.requests) {
-        let formattedAdditionalReagents = {
-          item: request.more_reagents,
+        let formattedAdditionalPurchases = {
+          item: request.more_purchases,
           name: request.name,
           subject: request.subject,
           class: request.class,
           uid: request.uid,
           email: request.email
         }
-        if (formattedAdditionalReagents.item !== '') {
-          tmpAdditionalReagents.push(formattedAdditionalReagents)
+        if (formattedAdditionalPurchases.item !== '') {
+          tmpAdditionalPurchases.push(formattedAdditionalPurchases)
         }
       }
-      return tmpAdditionalReagents
+      return tmpAdditionalPurchases
     }
   }
 }

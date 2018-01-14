@@ -67,6 +67,7 @@ export default {
         class: r.classblock,
         teacher: r.teacher,
         timestamp: moment(r.timestamp, 'DD-MM-YYYY hh:mm:ss'),
+        email: r.emailaddress,
 
         RQ: r.researchquestion,
         indep: r.independentvariable,

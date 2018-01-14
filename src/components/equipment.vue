@@ -1,13 +1,13 @@
 <template lang="pug">
   .layout-padding
-    h1 REAGENTS
+    h1 SENSORS
     br
-    q-data-table(:data="reagents", :config="config", :columns="columns")
+    q-data-table(:data="sensors", :config="config", :columns="columns")
       template(slot="col-email" scope="cell")
         a(:href="'mailto:'+cell.data+'?Subject=[Lab%20Request]%20'") {{ cell.data }}
     //- hr
-    h2 Additional reagents
-    q-data-table(:data="additionalReagents", :config="config", :columns="addColumns")
+    h2 Additional sensors
+    q-data-table(:data="additionalSensors", :config="config", :columns="addColumns")
 
 </template>
 
@@ -29,24 +29,9 @@ export default {
       },
       columns: [
         {
-          label: 'Reagent',
+          label: 'Sensor',
           field: 'item',
           width: '180px'
-        },
-        {
-          label: 'Amount / g',
-          field: 'amount',
-          width: '80px'
-        },
-        {
-          label: 'Conc / mol/dm3',
-          field: 'conc',
-          width: '100px'
-        },
-        {
-          label: 'Volume / cm3',
-          field: 'vol',
-          width: '100px'
         },
         {
           label: 'Student',
@@ -120,18 +105,15 @@ export default {
       return this.$store.getters.getRequests
     },
 
-    reagents () {
-      let tmpReagents = []
+    sensors () {
+      let tmpSensors = []
 
       for (let request of this.requests) {
         // console.log(request)
-        for (let reagent of request.reagents) {
+        for (let sensor of request.digital_sensors) {
           // console.log(reagent)
-          let formattedReagent = {
-            item: reagent.item,
-            amount: reagent.amount,
-            conc: reagent.conc,
-            vol: reagent.vol,
+          let formattedSensor = {
+            item: sensor,
             name: request.name,
             subject: request.subject,
             class: request.class,
@@ -140,12 +122,12 @@ export default {
           }
 
           // console.log("formattedReagent= ", formattedReagent)
-          if (formattedReagent.item !== '') {
-            tmpReagents.push(formattedReagent)
+          if (formattedSensor.item !== '') {
+            tmpSensors.push(formattedSensor)
           }
         }
       }
-      tmpReagents.sort((a, b) => {
+      tmpSensors.sort((a, b) => {
         if (a.class.toLowerCase() < b.class.toLowerCase()) { return -1 }
         else if (a.class.toLowerCase() > b.class.toLowerCase()) { return 1 }
         else { return 0 }
@@ -158,25 +140,25 @@ export default {
         else if (a.item.toLowerCase() > b.item.toLowerCase()) { return 1 }
         else { return 0 }
       })
-      return tmpReagents
+      return tmpSensors
     },
 
-    additionalReagents () {
-      let tmpAdditionalReagents = []
+    additionalSensors () {
+      let tmpAdditionalSensors = []
       for (let request of this.requests) {
-        let formattedAdditionalReagents = {
-          item: request.more_reagents,
+        let formattedAdditionalSensors = {
+          item: request.more_equipment,
           name: request.name,
           subject: request.subject,
           class: request.class,
           uid: request.uid,
           email: request.email
         }
-        if (formattedAdditionalReagents.item !== '') {
-          tmpAdditionalReagents.push(formattedAdditionalReagents)
+        if (formattedAdditionalSensors.item !== '') {
+          tmpAdditionalSensors.push(formattedAdditionalSensors)
         }
       }
-      return tmpAdditionalReagents
+      return tmpAdditionalSensors
     }
   }
 }
